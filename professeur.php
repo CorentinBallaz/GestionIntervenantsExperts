@@ -175,7 +175,11 @@ echo  $_SESSION['login'];
   <input type="submit" name="Domaine1" class="btn btn-dark">
  </form>
  <?php
-    isset($_POST['C'])
+    isset($_POST['Domaine1']){
+      // Balaz s'en occupe 
+      $sql = "INSERT INTO personne (id_personne, nom,prenom ,login, mot_de_passe, type) VALUES (?,?,?,?,?,?);";
+      $db->prepare($sql)->execute([]);
+    }
  ?>
 
 
