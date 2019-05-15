@@ -31,12 +31,17 @@ if ((isset($_POST['login'])) && (isset($_POST['pwd']))) {
         echo "</br>";
         if ($_type == "Etudiant"){
             echo '<a href="etudiant.php">Page etudiant</a>';
+            header('location: etudiant.php');
           }else if($_type == "Professeur"){
-            echo '<a href="professeur.php">Page prof</a>';;
+            echo '<a href="professeur.php">Page prof</a>';
+            header('location: professeur.php');
           }else if($_type == "Expert"){
             echo '<a href="expert.php">Page expert</a>';
+            header('location: expert.php');
           }
 
+      }else{
+        header('location: Accueil.php');
       }
     }
   }catch(PDOExeption $e){
