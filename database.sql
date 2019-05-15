@@ -4,7 +4,7 @@ create table personne(id_personne integer auto_increment primary key,
 		  login varchar(30),
 		  mot_de_passe varchar(30),
 		  type varchar(30)) 
-	TYPE=INNODB;
+	ENGINE=INNODB;
 
 create table demande(id_demande integer auto_increment primary key,
 		  cours_concerne varchar(30),
@@ -14,24 +14,26 @@ create table demande(id_demande integer auto_increment primary key,
 		  duree integer DEFAULT null,
 		  retour varchar(300) DEFAULT null,
 		  groupe_concerne varchar(30),
-		  eleve_concerne varchar(30))
-	TYPE=INNODB;
+		  eleve_concerne varchar(30),
+		  id_eleve integer DEFAULT null,
+		  id_expert integer DEFAULT null)
+	ENGINE=INNODB;
 
 create table cours(id_cours integer auto_increment primary key,
 		  nom_cours varchar(30))
-	TYPE=INNODB;
+	ENGINE=INNODB;
 
 create table domaine_expertise(id_domaine integer auto_increment primary key,
 		  nom_expertise varchar(30))
-	TYPE=INNODB;
+	ENGINE=INNODB;
 
 create table aCours(id_cours integer,
 		  id_personne integer)
-	TYPE=INNODB;
+	ENGINE=INNODB;
 
 create table estExpert(id_domaine integer,
 		  id_expert integer)
-	TYPE=INNODB;
+	ENGINE=INNODB;
 
 
 ALTER TABLE demande
