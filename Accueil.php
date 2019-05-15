@@ -35,10 +35,19 @@
 
 <?php
 
-if (isset($_POST['Creation']))
-{
-  echo $_POST['type'];
-  echo $_POST['login'];
-  echo $_POST['pwd'];
+
+try{
+  $db = new PDO('mysql:host=localhost;dbname=gestionintervenantsexperts','root','');
+
+  if (isset($_POST['Creation']))
+  {
+    $id = "NULL";
+    $sql = "INSERT INTO personne (id_personne, nom,prenom ,login, mot_de_passe, type) VALUES (?,?,?,?,?,?);";
+    $db->prepare($sql)->execute([$id,$id, $id, $_POST['login'],$_POST['pwd'], $_POST['type']]);
+    
+
+  }
+}catch(PDOExeption $e){
+  echo "erreur de connection à la BDD";
 }
 ?>
