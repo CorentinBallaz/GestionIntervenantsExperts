@@ -157,7 +157,7 @@ echo  $_SESSION['login'];
 
   <form class="form-group" method="post" action="professeur.php">
     Domaine :
-    <SELECT name="Domaine" size="1">
+    <SELECT name="Cours" size="1">
     <?php
     $db = new PDO('mysql:host=localhost;dbname=gestionintervenantsexperts','root','');
     $qry = 'SELECT nom_cours FROM cours';
@@ -165,9 +165,9 @@ echo  $_SESSION['login'];
     //on recupere le type ( etudiant ,expert , prof )
     $req = $db->query($qry);
     while($log = $req->fetch()){
-      $Domaine = $log[0];
-      echo $Domaine;
-      echo "<option>".$Domaine;
+      $Cours = $log[0];
+      echo $Cours;
+      echo "<option>".$Cours;
     }
      ?>
     </SELECT>
@@ -176,8 +176,7 @@ echo  $_SESSION['login'];
  </form>
  <?php
     isset($_POST['Domaine1']){
-      // Balaz s'en occupe 
-      $sql = "INSERT INTO personne (id_personne, nom,prenom ,login, mot_de_passe, type) VALUES (?,?,?,?,?,?);";
+      $sql = "INSERT INTO aCours (id_cours, id_personne) VALUES ((SELECT id_cours FROM cours WHERE nom_cours = '".$_POST["Domaine"]."'),(SELECT id_personne FROM personne WHERE login = '".$_SESSION["login"]."'))";
       $db->prepare($sql)->execute([]);
     }
  ?>
