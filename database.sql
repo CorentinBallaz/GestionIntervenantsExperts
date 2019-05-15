@@ -24,7 +24,8 @@ create table if not exists cours(id_cours integer auto_increment primary key,
 	ENGINE=INNODB;
 
 create table if not exists domaine_expertise(id_domaine integer auto_increment primary key,
-		  nom_expertise varchar(30))
+		  nom_expertise varchar(30),
+		  id_cours integer)
 	ENGINE=INNODB;
 
 create table if not exists aCours(id_aCours integer auto_increment primary key,
@@ -42,6 +43,9 @@ ALTER TABLE demande
 ADD foreign KEY (id_eleve) references personne (id_personne),
 ADD	foreign KEY (id_expert) references personne (id_personne);
 
+ALTER TABLE domaine_expertise
+ADD foreign KEY (id_cours) references cours (id_cours);
+
 ALTER TABLE aCours
 ADD foreign KEY (id_cours) references cours(id_cours),
 ADD foreign KEY (id_personne) references personne(id_personne);
@@ -51,19 +55,31 @@ ADD foreign KEY (id_domaine) references domaine_expertise(id_domaine),
 ADD	foreign KEY (id_expert) references personne(id_personne);
 
 
+INSERT INTO cours(nom_cours) VALUES ('ISOC631');
+INSERT INTO cours(nom_cours) VALUES ('INFO641');
+INSERT INTO cours(nom_cours) VALUES ('INFO642');
+INSERT INTO cours(nom_cours) VALUES ('MATHS631');
+INSERT INTO cours(nom_cours) VALUES ('INFO631');
+INSERT INTO cours(nom_cours) VALUES ('INFO632');
+INSERT INTO cours(nom_cours) VALUES ('MECA631');
+INSERT INTO cours(nom_cours) VALUES ('ELEC631');
 
-INSERT INTO domaine_expertise(nom_expertise) VALUES ('Gestion GitHub');
-INSERT INTO domaine_expertise(nom_expertise) VALUES ('BlockChain');
-INSERT INTO domaine_expertise(nom_expertise) VALUES ('Php, CSS, Html');
-INSERT INTO domaine_expertise(nom_expertise) VALUES ('Java et interfaces graphiques');
-INSERT INTO domaine_expertise(nom_expertise) VALUES ('Python et utilisation API');
-INSERT INTO domaine_expertise(nom_expertise) VALUES ('Statistiques et mathématiques générales');
-INSERT INTO domaine_expertise(nom_expertise) VALUES ('Mathématiques logiques');
-INSERT INTO domaine_expertise(nom_expertise) VALUES ('Gestion base de données');
-INSERT INTO domaine_expertise(nom_expertise) VALUES ('Mécanique des fluides');
-INSERT INTO domaine_expertise(nom_expertise) VALUES ('Mécanique des matériaux');
-INSERT INTO domaine_expertise(nom_expertise) VALUES ('Electricité');
-INSERT INTO domaine_expertise(nom_expertise) VALUES ('Electronique');
+
+INSERT INTO domaine_expertise(nom_expertise,id_cours) VALUES ('Gestion GitHub',(select c.id_cours from cours c where c.nom_cours like 'ISOC631'));
+INSERT INTO domaine_expertise(nom_expertise,id_cours) VALUES ('BlockChain',(select c.id_cours from cours c where c.nom_cours like 'ISOC631'));
+INSERT INTO domaine_expertise(nom_expertise,id_cours) VALUES ('Php, CSS, Html',(select c.id_cours from cours c where c.nom_cours like 'INFO642'));
+INSERT INTO domaine_expertise(nom_expertise,id_cours) VALUES ('Java et interfaces graphiques',(select c.id_cours from cours c where c.nom_cours like 'INFO641'));
+INSERT INTO domaine_expertise(nom_expertise,id_cours) VALUES ('Python et utilisation API',(select c.id_cours from cours c where c.nom_cours like 'ISOC631'));
+INSERT INTO domaine_expertise(nom_expertise,id_cours) VALUES ('Statistiques et mathématiques générales',(select c.id_cours from cours c where c.nom_cours like 'MATHS631'));
+INSERT INTO domaine_expertise(nom_expertise,id_cours) VALUES ('Mathématiques logiques',(select c.id_cours from cours c where c.nom_cours like 'INFO631'));
+INSERT INTO domaine_expertise(nom_expertise,id_cours) VALUES ('Gestion base de données',(select c.id_cours from cours c where c.nom_cours like 'INFO642'));
+INSERT INTO domaine_expertise(nom_expertise,id_cours) VALUES ('Mécanique des fluides',(select c.id_cours from cours c where c.nom_cours like 'MECA631'));
+INSERT INTO domaine_expertise(nom_expertise,id_cours) VALUES ('Mécanique des matériaux',(select c.id_cours from cours c where c.nom_cours like 'MECA631'));
+INSERT INTO domaine_expertise(nom_expertise,id_cours) VALUES ('Electricité',(select c.id_cours from cours c where c.nom_cours like 'ELEC631'));
+INSERT INTO domaine_expertise(nom_expertise,id_cours) VALUES ('Electronique',(select c.id_cours from cours c where c.nom_cours like 'ELEC631'));
+INSERT INTO domaine_expertise(nom_expertise,id_cours) VALUES ('Système d exploitation',(select c.id_cours from cours c where c.nom_cours like 'INFO632'));
+INSERT INTO domaine_expertise(nom_expertise,id_cours) VALUES ('C, C++',(select c.id_cours from cours c where c.nom_cours like 'INFO632'));
+
 
 
 
