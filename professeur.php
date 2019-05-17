@@ -156,7 +156,13 @@ FIN CODE POUR LES COURS
           echo '<td>Coco</td>';
           echo '<td>Coco</td>';
           echo '<td>Coco</td>';
-          echo '</tr>';  
+          echo '</tr>';
+          // $qry = 'SELECT nom_cours FROM cours';
+          // $req = $db->query($qry);
+          // while($log = $req->fetch()){
+          //   echo $log[0];
+
+          }
 
         }
        ?>
