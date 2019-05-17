@@ -1,3 +1,11 @@
+DROP TABLE IF EXISTS estExpert;
+DROP TABLE IF EXISTS aCours;
+DROP TABLE IF EXISTS demande;
+DROP TABLE IF EXISTS domaine_expertise;
+DROP TABLE IF EXISTS personne;
+DROP TABLE IF EXISTS cours;
+
+
 create table if not exists personne(id_personne integer auto_increment primary key,
 		  nom varchar(100),
 		  prenom varchar(100),
@@ -13,8 +21,7 @@ create table if not exists demande(id_demande integer auto_increment primary key
 		  etat varchar(100),
 		  duree integer DEFAULT null,
 		  retour varchar(500) DEFAULT null,
-		  groupe_concerne varchar(100),
-		  eleve_concerne varchar(100),
+		  nb_eleve_concerne varchar(100),
 		  id_eleve integer DEFAULT null,
 		  id_expert integer DEFAULT null)
 	ENGINE=INNODB;
