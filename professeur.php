@@ -2,7 +2,7 @@
 <!DOCTYPE html>
       <html lang="fr">
       <head>
-        <title>New compte</title>
+        <title>Professeur</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
@@ -66,7 +66,7 @@ CODE POUR LES COURS
 -->
 
 
-  <form class="form-group" method="post" action="professeur.php">
+  <center></br><form class="form-group" method="post" action="professeur.php">
     Domaine :
     <SELECT name="Cours" size="1">
     <?php
@@ -84,7 +84,7 @@ CODE POUR LES COURS
     </SELECT>
 
   <input type="submit" name="Domaine1" class="btn btn-dark">
- </form>
+</form></center></br>
  <?php
     if (isset($_POST['Domaine1'])){
       $sql = "INSERT INTO aCours (id_cours, id_personne) VALUES ((SELECT id_cours FROM cours WHERE nom_cours = '".$_POST["Cours"]."'),(SELECT id_personne FROM personne WHERE login = '".$_SESSION["login"]."'))";
@@ -146,48 +146,50 @@ FIN CODE POUR LES COURS
         <th>eleve_concerne</th>
       </tr>
     </thead>
-    <tbody>
-    <?php
 
+    <?php
         if(isset($_POST['info'])){
+          echo '<tbody>';
           $qry = 'SELECT cours_concerne ,description, eleve_concerne FROM demande WHERE eleve_concerne ="'.$_POST['eleve_c'].'"';
           $req = $db->query($qry);
+          $nom_cours = "";
           while($log = $req->fetch()){
+            echo '<tr>';
             echo '<td>'.$log[0].'</td>';
+            $nom_cours = $log[0];
             echo '<td>'.$log[1].'</td>';
             echo '<td>'.$log[2].'</td>';
+            echo '</tr>';
           }
+
+            echo '<td>';
+            echo '<form class="form-group" method="post" action="professeur.php">';
+            echo '<SELECT name="expert" size=1>';
+            $query = "SELECT nom FROM personne WHERE id_personne IN (SELECT id_expert FROM estexpert WHERE id_domaine IN (SELECT id_domaine FROM domaine_expertise WHERE id_cours IN (SELECT id_cours FROM cours WHERE nom_cours ='".$nom_cours."')))";
+
+            $req = $db->query($query);
+            while($log = $req->fetch()){
+              echo '<option value="'.$log[0].'">'.$log[0];
+           }
+           echo '</SELECT><input type="submit" name="expert_btn" ></form>';
+           echo '</td>';
+           echo '</tbody>';
+
         }
-       ?>
+        if (isset($_POST['expert_btn'])){
+          $nom_expert = $_POST['expert'];
+          $sous_requ = '(SELECT id_personne FROM personne WHERE nom ="'.$nom_expert.'" LIMIT 1)';
+          $sql = 'UPDATE demande SET id_expert ='.$sous_requ.' WHERE id_demande = '.$sous_requ;
+          $db->prepare($sql)->execute();
+        }
 
+      ?>
 
-
-    </tbody>
-  </table>
-  <br>
-  <br>
-  <br>
-
+       </table>
+      <br>
+      <br>
+      <br>
   	</div>
-  	<div class ="col-xs-4">
-
-  		<br>
-  		<br>
-  		<br>
-  		<br>
-  		<br>
-  <label for="sel1">Experts concernés:</label>
- <select multiple class="form-control" id="sel2">
-        <option>1</option>
-        <option>2</option>
-        <option>3</option>
-        <option>4</option>
-        <option>5</option>
-      </select>
-      <br>
-      <br>
-      <button type="button" class="btn">Envoyer</button>
-  </div>
   </div>
 </div>
 </div>
@@ -209,34 +211,26 @@ FIN CODE POUR LES COURS
       <h1> Comptes Rendus Reçus</h1>
       <br>
       <br>
-    <div class="list-group">
-
-  <a href="#" class="list-group-item active">
-    <h4 class="list-group-item-heading">De : Nom de l'étudiant</h4>
-    <p class="list-group-item-text">Domaine expertise : </p>
-  </a>
- <a href="#" class="list-group-item ">
-    <h4 class="list-group-item-heading">De : Nom de l'étudiant</h4>
-    <p class="list-group-item-text">Domaine expertise : </p>
-  </a>
- <a href="#" class="list-group-item ">
-    <h4 class="list-group-item-heading">De : Nom de l'étudiant</h4>
-    <p class="list-group-item-text">Domaine expertise : </p>
-  </a>
-  <a href="#" class="list-group-item ">
-    <h4 class="list-group-item-heading">De : Nom de l'étudiant</h4>
-    <p class="list-group-item-text">Domaine expertise : </p>
-  </a>
-  <a href="#" class="list-group-item ">
-    <h4 class="list-group-item-heading">De : Nom de l'étudiant</h4>
-    <p class="list-group-item-text">Domaine expertise : </p>
-  </a>
-  <a href="#" class="list-group-item ">
-    <h4 class="list-group-item-heading">De : Nom de l'étudiant</h4>
-    <p class="list-group-item-text">Domaine expertise : </p>
-    <input rype="submit">
-  </a>
-   </div>
+      <form class="form-group" method="post" action="professeur.php">
+        <?php
+            echo '';
+            echo '<SELECT name="reçu" size=1>';
+            try{
+              $qry = "SELECT eleve_concerne FROM demande ";
+              $req = $db->query($qry);
+              while($log = $req->fetch()){
+                echo '<option value="'.$log[0].'">'.$log[0];
+              }
+            }catch(PDOExeption $e){
+              echo "erreur de connection à la BDD";
+            }
+            echo '</SELECT></br></br>';
+            echo '<input type="submit" name="btn_recu" >';
+         ?>
+    </form>
+    <!--
+      Select le comptes rendu
+    -->
 
     </div>
 
@@ -297,8 +291,5 @@ FIN CODE POUR LES COURS
 </div>
 	</div>
 </div>
-<!--<footer class="container-fluid text-center">
-  <p>Footer Text</p>
-</footer>-->
 
 </body>
