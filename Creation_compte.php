@@ -25,9 +25,9 @@
         Votre mtdp : <input type="password" class="form-control" name="pwd" required><br />
         Votre Nom : <input type="text" class="form-control" name="nom" required><br />
         Votre Prenom : <input type="text" class="form-control" name="prenom" required><br />
-        <INPUT type= "radio" name="type" value="Etudiant" checked> Etudiant
-        <INPUT type= "radio" name="type" value="Professeur"> Professeur
-        <INPUT type= "radio" name="type" value="Expert"> Expert
+        <INPUT type= "radio" name="type" value="etudiant" checked> Etudiant
+        <INPUT type= "radio" name="type" value="professeur"> Professeur
+        <INPUT type= "radio" name="type" value="expert"> Expert
         <br/>
       <input type="submit" name="Creation" class="btn btn-dark">
       </form>

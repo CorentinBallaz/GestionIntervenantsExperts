@@ -29,13 +29,13 @@ if ((isset($_POST['login'])) && (isset($_POST['pwd']))) {
         echo "</br>";
         echo "Je suis un ".$_type ;
         echo "</br>";
-        if ($_type == "Etudiant"){
+        if ($_type == "etudiant"){
             echo '<a href="etudiant.php">Page etudiant</a>';
             header('location: etudiant.php');
-          }else if($_type == "Professeur"){
+          }else if($_type == "professeur"){
             echo '<a href="professeur.php">Page prof</a>';
             header('location: professeur.php');
-          }else if($_type == "Expert"){
+          }else if($_type == "expert"){
             echo '<a href="expert.php">Page expert</a>';
             header('location: expert.php');
           }
@@ -49,7 +49,7 @@ if ((isset($_POST['login'])) && (isset($_POST['pwd']))) {
     }
 }
 
-  
+
 
 
 

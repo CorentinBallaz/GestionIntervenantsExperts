@@ -153,12 +153,15 @@ FIN CODE POUR LES COURS
           $qry = 'SELECT cours_concerne ,description, eleve_concerne FROM demande WHERE eleve_concerne ="'.$_POST['eleve_c'].'"';
           $req = $db->query($qry);
           $nom_cours = "";
+          $eleve="";
           while($log = $req->fetch()){
             echo '<tr>';
             echo '<td>'.$log[0].'</td>';
             $nom_cours = $log[0];
             echo '<td>'.$log[1].'</td>';
             echo '<td>'.$log[2].'</td>';
+
+            $_SESSION['eleve']=$log[2];
             echo '</tr>';
           }
 
@@ -178,8 +181,10 @@ FIN CODE POUR LES COURS
         }
         if (isset($_POST['expert_btn'])){
           $nom_expert = $_POST['expert'];
-          $sous_requ = '(SELECT id_personne FROM personne WHERE nom ="'.$nom_expert.'" LIMIT 1)';
-          $sql = 'UPDATE demande SET id_expert ='.$sous_requ.' WHERE id_demande = '.$sous_requ;
+          $sous_requ = '(SELECT id_personne FROM personne WHERE nom ="'.$nom_expert.'")';
+
+          $eleve = $_SESSION['eleve'];
+          $sql = 'UPDATE demande SET id_expert ='.$sous_requ.' WHERE eleve_concerne = "'.$eleve.'"';
           $db->prepare($sql)->execute();
         }
 
