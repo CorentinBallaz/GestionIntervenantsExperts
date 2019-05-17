@@ -143,14 +143,16 @@ FIN CODE POUR LES COURS
       <tr>
         <th>cours_concerné</th>
         <th>description</th>
+        <th>etat</th>
         <th>id_eleve</th>
+
       </tr>
     </thead>
 
     <?php
         if(isset($_POST['info'])){
           echo '<tbody>';
-          $qry = 'SELECT nom_cours ,description, id_eleve FROM demande FULL JOIN cours ON id_cours_concerne = id_cours WHERE id_eleve =(SELECT id_personne FROM personne WHERE prenom ="'.$_POST['eleve_c'].'")';
+          $qry = 'SELECT nom_cours ,description,etat, id_eleve FROM demande FULL JOIN cours ON id_cours_concerne = id_cours WHERE id_eleve =(SELECT id_personne FROM personne WHERE prenom ="'.$_POST['eleve_c'].'")';
           $req = $db->query($qry);
           $nom_cours = "";
           $eleve="";
@@ -160,8 +162,9 @@ FIN CODE POUR LES COURS
             $nom_cours = $log[0];
             echo '<td>'.$log[1].'</td>';
             echo '<td>'.$log[2].'</td>';
+            echo '<td>'.$log[3].'</td>';
 
-            $_SESSION['eleve']=$log[2];
+            $_SESSION['eleve']=$log[3];
             echo '</tr>';
           }
 
@@ -184,7 +187,9 @@ FIN CODE POUR LES COURS
           $sous_requ = '(SELECT id_personne FROM personne WHERE nom ="'.$nom_expert.'")';
 
           $eleve = $_SESSION['eleve'];
-          $sql = 'UPDATE demande SET id_expert ='.$sous_requ.' WHERE eleve_concerne = "'.$eleve.'"';
+          $sql = 'UPDATE demande SET id_expert ='.$sous_requ.' WHERE id_eleve = "'.$eleve.'"';
+          $db->prepare($sql)->execute();
+          $sql = 'UPDATE demande SET etat = "validee" WHERE id_eleve = "'.$eleve.'"';
           $db->prepare($sql)->execute();
         }
 
