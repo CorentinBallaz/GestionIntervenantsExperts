@@ -1,30 +1,30 @@
 create table if not exists personne(id_personne integer auto_increment primary key,
-		  nom varchar(30),
-		  prenom varchar(30),
-		  login varchar(30),
-		  mot_de_passe varchar(30),
+		  nom varchar(100),
+		  prenom varchar(100),
+		  login varchar(100),
+		  mot_de_passe varchar(100),
 		  type varchar(30)) 
 	ENGINE=INNODB;
 
 create table if not exists demande(id_demande integer auto_increment primary key,
-		  cours_concerne varchar(30),
-		  domaine_expertise varchar(30),
-		  description varchar(200),
-		  etat varchar(10),
+		  cours_concerne varchar(100),
+		  domaine_expertise varchar(100),
+		  description varchar(300),
+		  etat varchar(100),
 		  duree integer DEFAULT null,
-		  retour varchar(300) DEFAULT null,
-		  groupe_concerne varchar(30),
-		  eleve_concerne varchar(30),
+		  retour varchar(500) DEFAULT null,
+		  groupe_concerne varchar(100),
+		  eleve_concerne varchar(100),
 		  id_eleve integer DEFAULT null,
 		  id_expert integer DEFAULT null)
 	ENGINE=INNODB;
 
 create table if not exists cours(id_cours integer auto_increment primary key,
-		  nom_cours varchar(30))
+		  nom_cours varchar(100))
 	ENGINE=INNODB;
 
 create table if not exists domaine_expertise(id_domaine integer auto_increment primary key,
-		  nom_expertise varchar(30),
+		  nom_expertise varchar(100),
 		  id_cours integer)
 	ENGINE=INNODB;
 
