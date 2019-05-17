@@ -111,7 +111,7 @@ FIN CODE POUR LES COURS
       <form class="form-group" method="post" action="professeur.php">
         <?php
             echo '';
-            echo '<SELECT name="eleve" size=1>';
+            echo '<SELECT name="eleve_c" size=1>';
             try{
               $db = new PDO('mysql:host=localhost;dbname=gestionintervenantsexperts','root','');
               $qry = "SELECT eleve_concerne FROM demande ";
@@ -143,27 +143,20 @@ FIN CODE POUR LES COURS
       <tr>
         <th>cours_concerné</th>
         <th>description</th>
-        <th>Nombre d'élève</th>
-        <th>Domaine expertise</th>
+        <th>eleve_concerne</th>
       </tr>
     </thead>
     <tbody>
     <?php
 
         if(isset($_POST['info'])){
-          echo '<tr>';
-          echo '<td>Coco</td>';
-          echo '<td>Coco</td>';
-          echo '<td>Coco</td>';
-          echo '<td>Coco</td>';
-          echo '</tr>';
-          // $qry = 'SELECT nom_cours FROM cours';
-          // $req = $db->query($qry);
-          // while($log = $req->fetch()){
-          //   echo $log[0];
-
+          $qry = 'SELECT cours_concerne ,description, eleve_concerne FROM demande WHERE eleve_concerne ="'.$_POST['eleve_c'].'"';
+          $req = $db->query($qry);
+          while($log = $req->fetch()){
+            echo '<td>'.$log[0].'</td>';
+            echo '<td>'.$log[1].'</td>';
+            echo '<td>'.$log[2].'</td>';
           }
-
         }
        ?>
 
