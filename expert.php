@@ -1,4 +1,4 @@
-l>
+<!DOCTYPE html>
       <html lang="fr">
       <head>
         <title>Expert Interface</title>
@@ -54,7 +54,34 @@ session_start();
 echo  $_SESSION['login'];
  ?>
 <body>
-	
+
+
+<form class="form-group" method="post" action="expert.php">
+    Domaine d'expertise:
+    <SELECT name="Expertise" size="1">
+    <?php
+    $db = new PDO('mysql:host=localhost;dbname=gestionintervenantsexperts','root','');
+    $qry = 'SELECT nom_expertise FROM domaine_expertise';
+    //echo $qry;
+    //on recupere le type ( etudiant ,expert , prof )
+    $req = $db->query($qry);
+    while($log = $req->fetch()){
+      $Expertise = $log[0];
+      //echo $Cours;
+      echo "<option>".$Expertise;
+    }
+     ?>
+    </SELECT>
+
+  <input type="submit" name="Expertise1" class="btn btn-dark">
+ </form>
+ <?php
+    if (isset($_POST['Expertise1'])){
+      $sql = "INSERT INTO estexpert (id_domaine, id_expert) VALUES ((SELECT id_domaine FROM domaine_expertise WHERE nom_expertise = '".$_POST["Expertise"]."'),(SELECT id_personne FROM personne WHERE login = '".$_SESSION["login"]."'))";
+      $db->prepare($sql)->execute([]);
+      //echo $sql;
+    }
+ ?>	
 
 
 
@@ -68,80 +95,93 @@ echo  $_SESSION['login'];
       <p><a href="#">Link</a></p>
       <p><a href="#">Link</a></p>-->
 
-      <h1> Faire une nouvelle demande </h1>
+      <h1> Demandes d'intervention reçu </h1>
       <br>
       
-     	<div class="col-sm-3 sidenav">
+     	<div class="col-sm-4">
      	 <!--<div class="form-group">-->
      	 	<br>
      	 	<br>
-		    <label for="Cours concernés">Cour Concerné</label>
-		    <select class="form-control" id="exampleFormControlSelect1">
-		      <option>1</option>
-		      <option>2</option>
-		      <option>3</option>
-		      <option>4</option>
-		      <option>5</option>
-		    </select>
+		    <label for="Cours concernés">Demandes de : </label>
+		    <select class="form" name="Eleve" id="exampleFormControlSelect1">
+		    <?php
+    			$db = new PDO('mysql:host=localhost;dbname=gestionintervenantsexperts','root','');
+    			$qry = "SELECT nom  FROM personne where id_personne in (select id_eleve from demande where (etat = 'validee' and id_expert in (select id_personne from personne where login = '".$_SESSION["login"]."')))";
+   				 //echo $qry;
+   					 //on recupere le type ( etudiant ,expert , prof )
+    $req = $db->query($qry);
+    while($log = $req->fetch()){
+      $Eleve = $log[0];
+      //echo $Cours;
+      echo "<option>".$Eleve;
+    }
+     ?>
+
+
+		 	</select>
+
+  
+  <input type="submit" name="Afficher" class="btn btn-dark">
+
 		  </div>
     
 
     <!--<div class="form-group">-->
   	<!--<div class ="col-xs-8">-->
-    <div class="col-sm-3"> 
-    	
-     	 	<br>
-     	 	<br>
-		    <label for="Domaine expertise">Domaine d'expertise</label>
-		    <select class="form-control" id="exampleFormControlSelect1">
-		      <option>1</option>
-		      <option>2</option>
-		      <option>3</option>
-		      <option>4</option>
-		      <option>5</option>
-		    </select>
-		  
+    <div class="col-sm-6"> 
+    		
+    <table class="table table-striped">
+    	<thead>
+     	 <tr>
+        	<th>cours_concerné</th>
+        	<th>description</th>
+        	<th>eleve_concerne</th>
+      	</tr>
+    	</thead>
+    <tbody>
+  	 <?php
+  	 if (isset($_POST["Afficher"])){
+    $db = new PDO('mysql:host=localhost;dbname=gestionintervenantsexperts','root','');
+    $qry = "SELECT cours_concerne,description FROM demande where id_eleve in (select id_personne from personne where nom = '".$_POST["Eleve"]."')"  ;
+    //echo $qry;
+    //on recupere le type ( etudiant ,expert , prof )
+    $req = $db->query($qry);
+    while($log = $req->fetch()){
+      $Expertise = $log[0];
+      //echo $Cours;
+      echo $Expertise;
+    }
+     ?>
+
+  
+
+
+}
+       <tr>	
+       			<td> ISOC</td>
+       			<td> un cours concernant la blockchain</td>
+       			<td> Dadou</td>
+       </tr>
+
+
+    </tbody>
+  </table>
   
   	</div>
-  	<div class="col-sm-3"> 
-  		<br>
-  		<br>
-  		<label for="Domaine expertise">Nombre d'élèves </label>
-		    <select class="form-control" id="exampleFormControlSelect1">
-		      <option>1</option>
-		      <option>2</option>
-		      <option>3</option>
-		      <option>4</option>
-		      <option>5</option>
-		    </select>
-
-  	</div>
-
-  	<div class="col-sm-3"> 
-  		<br>
-  		<br>
-  		 <label for="Archivage">Archivage des données :</label>
+  	
+  	<div class="col-sm-2"> 
+  		
+  		
  
       <br>
       <br>
-      <button type="button" class="btn">Archivage</button>
+      <button type="button" class="btn">Accepter</button>
+       <button type="button" class="btn">Refuser</button>
 
   	</div>
   	
   </div>
 </div>
-</div>
-
-
-
-</div>
-<!-- SPLITE -->
-
-
-
-</div>
-	</div>
-
-
 
 </body>
+</html>
