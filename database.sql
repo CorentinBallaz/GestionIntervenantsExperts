@@ -70,14 +70,14 @@ INSERT INTO domaine_expertise(nom_expertise,id_cours) VALUES ('BlockChain',(sele
 INSERT INTO domaine_expertise(nom_expertise,id_cours) VALUES ('Php, CSS, Html',(select c.id_cours from cours c where c.nom_cours like 'INFO642'));
 INSERT INTO domaine_expertise(nom_expertise,id_cours) VALUES ('Java et interfaces graphiques',(select c.id_cours from cours c where c.nom_cours like 'INFO641'));
 INSERT INTO domaine_expertise(nom_expertise,id_cours) VALUES ('Python et utilisation API',(select c.id_cours from cours c where c.nom_cours like 'ISOC631'));
-INSERT INTO domaine_expertise(nom_expertise,id_cours) VALUES ('Statistiques et mathématiques générales',(select c.id_cours from cours c where c.nom_cours like 'MATHS631'));
-INSERT INTO domaine_expertise(nom_expertise,id_cours) VALUES ('Mathématiques logiques',(select c.id_cours from cours c where c.nom_cours like 'INFO631'));
-INSERT INTO domaine_expertise(nom_expertise,id_cours) VALUES ('Gestion base de données',(select c.id_cours from cours c where c.nom_cours like 'INFO642'));
-INSERT INTO domaine_expertise(nom_expertise,id_cours) VALUES ('Mécanique des fluides',(select c.id_cours from cours c where c.nom_cours like 'MECA631'));
-INSERT INTO domaine_expertise(nom_expertise,id_cours) VALUES ('Mécanique des matériaux',(select c.id_cours from cours c where c.nom_cours like 'MECA631'));
-INSERT INTO domaine_expertise(nom_expertise,id_cours) VALUES ('Electricité',(select c.id_cours from cours c where c.nom_cours like 'ELEC631'));
+INSERT INTO domaine_expertise(nom_expertise,id_cours) VALUES ('Statistiques et mathematiques generales',(select c.id_cours from cours c where c.nom_cours like 'MATHS631'));
+INSERT INTO domaine_expertise(nom_expertise,id_cours) VALUES ('Mathematiques logiques',(select c.id_cours from cours c where c.nom_cours like 'INFO631'));
+INSERT INTO domaine_expertise(nom_expertise,id_cours) VALUES ('Gestion base de donnees',(select c.id_cours from cours c where c.nom_cours like 'INFO642'));
+INSERT INTO domaine_expertise(nom_expertise,id_cours) VALUES ('Mecanique des fluides',(select c.id_cours from cours c where c.nom_cours like 'MECA631'));
+INSERT INTO domaine_expertise(nom_expertise,id_cours) VALUES ('Mecanique des materiaux',(select c.id_cours from cours c where c.nom_cours like 'MECA631'));
+INSERT INTO domaine_expertise(nom_expertise,id_cours) VALUES ('Electricite',(select c.id_cours from cours c where c.nom_cours like 'ELEC631'));
 INSERT INTO domaine_expertise(nom_expertise,id_cours) VALUES ('Electronique',(select c.id_cours from cours c where c.nom_cours like 'ELEC631'));
-INSERT INTO domaine_expertise(nom_expertise,id_cours) VALUES ('Système d exploitation',(select c.id_cours from cours c where c.nom_cours like 'INFO632'));
+INSERT INTO domaine_expertise(nom_expertise,id_cours) VALUES ('Systeme d exploitation',(select c.id_cours from cours c where c.nom_cours like 'INFO632'));
 INSERT INTO domaine_expertise(nom_expertise,id_cours) VALUES ('C, C++',(select c.id_cours from cours c where c.nom_cours like 'INFO632'));
 
 
