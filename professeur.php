@@ -108,36 +108,24 @@ FIN CODE POUR LES COURS
       <h1> Demandes Reçus</h1>
       <br>
       <br>
-      <div class="list-group">
-      	<form>
-  <a href="#" class="list-group-item active">
-    <h4 class="list-group-item-heading">De : Nom de l'étudiant</h4>
-    <p class="list-group-item-text">Domaine expertise : </p>
-  </a>
- <a href="#" class="list-group-item ">
-    <h4 class="list-group-item-heading">De : Nom de l'étudiant</h4>
-    <p class="list-group-item-text">Domaine expertise : </p>
-  </a>
- <a href="#" class="list-group-item ">
-    <h4 class="list-group-item-heading">De : Nom de l'étudiant</h4>
-    <p class="list-group-item-text">Domaine expertise : </p>
-  </a>
-  <a href="#" class="list-group-item ">
-    <h4 class="list-group-item-heading">De : Nom de l'étudiant</h4>
-    <p class="list-group-item-text">Domaine expertise : </p>
-  </a>
-  <a href="#" class="list-group-item ">
-    <h4 class="list-group-item-heading">De : Nom de l'étudiant</h4>
-    <p class="list-group-item-text">Domaine expertise : </p>
-  </a>
-  <a href="#" class="list-group-item ">
-    <h4 class="list-group-item-heading">De : Nom de l'étudiant</h4>
-    <p class="list-group-item-text">Domaine expertise : </p>
-    <input rype="submit">
-  </a>
-
-</form>
-</div>
+      <form class="form-group" method="post" action="professeur.php">
+        <?php
+            echo '';
+            echo '<SELECT name="eleve" size=1>';
+            try{
+              $db = new PDO('mysql:host=localhost;dbname=gestionintervenantsexperts','root','');
+              $qry = "SELECT eleve_concerne FROM demande ";
+              $req = $db->query($qry);
+              while($log = $req->fetch()){
+                echo '<option value="'.$log[0].'">'.$log[0];
+              }
+            }catch(PDOExeption $e){
+              echo "erreur de connection à la BDD";
+            }
+            echo '</SELECT></br></br>';
+            echo '<input type="submit" name="info" >';
+         ?>
+    </form>
     </div>
 
     <div class="form-group">
@@ -153,20 +141,26 @@ FIN CODE POUR LES COURS
   <table class="table table-striped">
     <thead>
       <tr>
-        <th>Nom</th>
-        <th>Prenom</th>
+        <th>cours_concerné</th>
+        <th>description</th>
         <th>Nombre d'élève</th>
         <th>Domaine expertise</th>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>Coco</td>
-        <td>Blz</td>
-        <td>4</td>
-        <td>BlockChaine</td>
+    <?php
 
-      </tr>
+        if(isset($_POST['info'])){
+          echo '<tr>';
+          echo '<td>Coco</td>';
+          echo '<td>Coco</td>';
+          echo '<td>Coco</td>';
+          echo '<td>Coco</td>';
+          echo '</tr>';  
+
+        }
+       ?>
+
 
 
     </tbody>
@@ -217,7 +211,7 @@ FIN CODE POUR LES COURS
       <br>
       <br>
     <div class="list-group">
-      	<form>
+
   <a href="#" class="list-group-item active">
     <h4 class="list-group-item-heading">De : Nom de l'étudiant</h4>
     <p class="list-group-item-text">Domaine expertise : </p>
@@ -267,6 +261,7 @@ FIN CODE POUR LES COURS
     </thead>
     <tbody>
       <tr>
+
         <td>César Groum</td>
         <td>3:00</td>
         <td>On a effectué un TP, tres intéressant</td>
