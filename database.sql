@@ -15,13 +15,13 @@ create table if not exists personne(id_personne integer auto_increment primary k
 	ENGINE=INNODB;
 
 create table if not exists demande(id_demande integer auto_increment primary key,
-		  cours_concerne varchar(100),
-		  domaine_expertise varchar(100),
+		  id_cours_concerne integer DEFAULT null,
+		  id_domaine_expertise integer DEFAULT null,
 		  description varchar(300),
 		  etat varchar(100),
 		  duree integer DEFAULT null,
 		  retour varchar(500) DEFAULT null,
-		  nb_eleve_concerne varchar(100),
+		  nb_eleve_concerne integer DEFAULT null,
 		  id_eleve integer DEFAULT null,
 		  id_expert integer DEFAULT null)
 	ENGINE=INNODB;
@@ -71,7 +71,6 @@ INSERT INTO cours(nom_cours) VALUES ('INFO632');
 INSERT INTO cours(nom_cours) VALUES ('MECA631');
 INSERT INTO cours(nom_cours) VALUES ('ELEC631');
 
-
 INSERT INTO domaine_expertise(nom_expertise,id_cours) VALUES ('Gestion GitHub',(select c.id_cours from cours c where c.nom_cours like 'ISOC631'));
 INSERT INTO domaine_expertise(nom_expertise,id_cours) VALUES ('BlockChain',(select c.id_cours from cours c where c.nom_cours like 'ISOC631'));
 INSERT INTO domaine_expertise(nom_expertise,id_cours) VALUES ('Php, CSS, Html',(select c.id_cours from cours c where c.nom_cours like 'INFO642'));
@@ -86,6 +85,28 @@ INSERT INTO domaine_expertise(nom_expertise,id_cours) VALUES ('Electricite',(sel
 INSERT INTO domaine_expertise(nom_expertise,id_cours) VALUES ('Electronique',(select c.id_cours from cours c where c.nom_cours like 'ELEC631'));
 INSERT INTO domaine_expertise(nom_expertise,id_cours) VALUES ('Systeme d exploitation',(select c.id_cours from cours c where c.nom_cours like 'INFO632'));
 INSERT INTO domaine_expertise(nom_expertise,id_cours) VALUES ('C, C++',(select c.id_cours from cours c where c.nom_cours like 'INFO632'));
+
+INSERT INTO personne(nom, prenom, login, mot_de_passe, type) VALUES ("Durant","Nicolas","NicolasDurant","mdp","expert");
+INSERT INTO personne(nom, prenom, login, mot_de_passe, type) VALUES ("Dupont","Albert","AlbertDupont","mdp","expert");
+INSERT INTO personne(nom, prenom, login, mot_de_passe, type) VALUES ("Petit","David","DavidPetit","mdp","etudiant");
+INSERT INTO personne(nom, prenom, login, mot_de_passe, type) VALUES ("Nasri","Chiheb","ChihebNasri","mdp","etudiant");
+INSERT INTO personne(nom, prenom, login, mot_de_passe, type) VALUES ("Burillon","William","WilliamBurillon","mdp","professeur");
+INSERT INTO personne(nom, prenom, login, mot_de_passe, type) VALUES ("Mariton","Tanguy","TanguyMariton","mdp","professeur");
+
+INSERT INTO aCours(id_cours,id_personne) VALUES (1,5);
+INSERT INTO aCours(id_cours,id_personne) VALUES (6,6);
+INSERT INTO aCours(id_cours,id_personne) VALUES (1,3);
+INSERT INTO aCours(id_cours,id_personne) VALUES (6,3);
+INSERT INTO aCours(id_cours,id_personne) VALUES (1,4);
+INSERT INTO aCours(id_cours,id_personne) VALUES (6,4);
+
+INSERT INTO estExpert(id_domaine,id_expert) VALUES (1,1);
+INSERT INTO estExpert(id_domaine,id_expert) VALUES (14,2);
+
+INSERT INTO demande(id_cours_concerne,id_domaine_expertise,description,etat,nb_eleve_concerne,id_eleve) VALUES (1,1,"besoin d aide","transmise",15,3);
+INSERT INTO demande(id_cours_concerne,id_domaine_expertise,description,etat,nb_eleve_concerne,id_eleve,id_expert) VALUES (1,1,"besoin d aide","validee",12,4,1);
+
+
 
 
 
