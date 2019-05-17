@@ -23,6 +23,8 @@
         Votre login : <input  type="text" class="form-control" name="login" required>
         <br/>
         Votre mtdp : <input type="password" class="form-control" name="pwd" required><br />
+        Votre Nom : <input type="text" class="form-control" name="nom" required><br />
+        Votre Prenom : <input type="text" class="form-control" name="prenom" required><br />
         <INPUT type= "radio" name="type" value="Etudiant" checked> Etudiant
         <INPUT type= "radio" name="type" value="Professeur"> Professeur
         <INPUT type= "radio" name="type" value="Expert"> Expert

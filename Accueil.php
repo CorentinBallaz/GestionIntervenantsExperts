@@ -43,8 +43,8 @@ try{
   {
     $id = "NULL";
     $sql = "INSERT INTO personne (id_personne, nom,prenom ,login, mot_de_passe, type) VALUES (?,?,?,?,?,?);";
-    $db->prepare($sql)->execute([$id,$id, $id, $_POST['login'],$_POST['pwd'], $_POST['type']]);
-    
+    $db->prepare($sql)->execute([$id,$_POST['nom'], $_POST['prenom'], $_POST['login'],$_POST['pwd'], $_POST['type']]);
+
 
   }
 }catch(PDOExeption $e){
