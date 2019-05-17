@@ -114,7 +114,7 @@ FIN CODE POUR LES COURS
             echo '<SELECT name="eleve_c" size=1>';
             try{
               $db = new PDO('mysql:host=localhost;dbname=gestionintervenantsexperts','root','');
-              $qry = "SELECT eleve_concerne FROM demande ";
+              $qry = "SELECT prenom FROM demande FULL JOIN personne ON id_eleve = personne.id_personne ";
               $req = $db->query($qry);
               while($log = $req->fetch()){
                 echo '<option value="'.$log[0].'">'.$log[0];
@@ -143,14 +143,14 @@ FIN CODE POUR LES COURS
       <tr>
         <th>cours_concerné</th>
         <th>description</th>
-        <th>eleve_concerne</th>
+        <th>id_eleve</th>
       </tr>
     </thead>
 
     <?php
         if(isset($_POST['info'])){
           echo '<tbody>';
-          $qry = 'SELECT cours_concerne ,description, eleve_concerne FROM demande WHERE eleve_concerne ="'.$_POST['eleve_c'].'"';
+          $qry = 'SELECT nom_cours ,description, id_eleve FROM demande FULL JOIN cours ON id_cours_concerne = id_cours WHERE id_eleve =(SELECT id_personne FROM personne WHERE prenom ="'.$_POST['eleve_c'].'")';
           $req = $db->query($qry);
           $nom_cours = "";
           $eleve="";
