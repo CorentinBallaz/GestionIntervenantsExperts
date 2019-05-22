@@ -83,7 +83,7 @@ CODE POUR LES COURS
      ?>
     </SELECT>
 
-  <input type="submit" name="Domaine1" class="btn btn-dark">
+  <input type="submit" name="Domaine1" class="btn btn-info">
 </form></center></br>
  <?php
     if (isset($_POST['Domaine1'])){
@@ -123,7 +123,7 @@ FIN CODE POUR LES COURS
               echo "erreur de connection à la BDD";
             }
             echo '</SELECT></br></br>';
-            echo '<input type="submit" name="info" >';
+            echo '<input type="submit" name="info" class="btn btn-info" >';
          ?>
     </form>
     </div>
@@ -177,8 +177,9 @@ FIN CODE POUR LES COURS
             while($log = $req->fetch()){
               echo '<option value="'.$log[0].'">'.$log[0];
            }
-           echo '</SELECT><input type="submit" name="expert_btn" ></form>';
-           echo '</td>';
+
+           echo '</td><td>';
+           echo '</SELECT><input type="submit" name="expert_btn" class="btn btn-info" ></td></form>';
            echo '</tbody>';
 
         }
@@ -221,23 +222,25 @@ FIN CODE POUR LES COURS
       <h1> Comptes Rendus Reçus</h1>
       <br>
       <br>
-      <form class="form-group" method="post" action="professeur.php">
-        <?php
-            echo '';
-            echo '<SELECT name="reçu" size=1>';
-            try{
-              $qry = "SELECT eleve_concerne FROM demande ";
-              $req = $db->query($qry);
-              while($log = $req->fetch()){
-                echo '<option value="'.$log[0].'">'.$log[0];
+        <form class="form-group" method="post" action="professeur.php">
+          <?php
+              echo '';
+              echo '<SELECT name="eleve_c2" size=1>';
+              try{
+                $db = new PDO('mysql:host=localhost;dbname=gestionintervenantsexperts','root','');
+                $qry = "SELECT prenom FROM demande FULL JOIN personne ON id_eleve = personne.id_personne ";
+                $req = $db->query($qry);
+                while($log = $req->fetch()){
+                  echo '<option value="'.$log[0].'">'.$log[0];
+                }
+              }catch(PDOExeption $e){
+                echo "erreur de connection à la BDD";
               }
-            }catch(PDOExeption $e){
-              echo "erreur de connection à la BDD";
-            }
-            echo '</SELECT></br></br>';
-            echo '<input type="submit" name="btn_recu" >';
-         ?>
-    </form>
+              echo '</SELECT></br></br>';
+              echo '<input type="submit" name="info2" class="btn btn-info" >';
+           ?>
+      </form>
+
     <!--
       Select le comptes rendu
     -->
@@ -257,49 +260,54 @@ FIN CODE POUR LES COURS
   <table class="table table-striped">
     <thead>
       <tr>
-        <th>Expert</th>
         <th>Durée de l'intervention</th>
         <th>Retour</th>
       </tr>
     </thead>
     <tbody>
-      <tr>
-
-        <td>César Groum</td>
-        <td>3:00</td>
-        <td>On a effectué un TP, tres intéressant</td>
-
-
-      </tr>
+    <?php
+    if(isset($_POST['info2'])){
+      echo '<tbody>';
+      $qry = 'SELECT id_demande,duree, retour FROM demande WHERE id_eleve =(SELECT id_personne FROM personne WHERE prenom ="'.$_POST['eleve_c2'].'")';
+      $req = $db->query($qry);
+      $nom_cours = "";
 
 
-    </tbody>
+      while($log = $req->fetch()){
+        echo '<tr>';
+        echo '<td>'.$log[1].'</td>';
+        echo '<td>'.$log[2].'</td>';
+        $_SESSION['elevec2']=$log[0];
+        echo '</tr>';
+      }
+      echo '<tr>';
+      echo '<td>'." Archivage des données".'</td>';
+      echo '</tr>';
+      echo '<tr><td>
+      <form class="form-group" method="post" action="professeur.php">
+        <input type="submit" name="archi" class="btn btn-info">
+      </form></td></tr>';
+
+    }
+    if(isset($_POST['archi'])){
+
+      $elevec2 = $_SESSION['elevec2'];
+      $sql = 'UPDATE demande SET etat = "Archivée" WHERE id_demande = "'.$elevec2.'"';
+      echo $sql;
+      $db->prepare($sql)->execute();
+    }
+
+       ?>
+       </tbody>
   </table>
   <br>
   <br>
   <br>
 
-  	</div>
-  	<div class ="col-xs-4">
 
-  		<br>
-  		<br>
-  		<br>
-  		<br>
-  		<br>
-  <label for="Archivage">Archivage des données :</label>
-
-      <br>
-      <br>
-      <button type="button" class="btn">Archivage</button>
-  </div>
   </div>
 </div>
 </div>
 
-
-</div>
-	</div>
-</div>
 
 </body>
