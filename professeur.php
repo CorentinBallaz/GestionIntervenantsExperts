@@ -114,7 +114,7 @@ FIN CODE POUR LES COURS
             echo '<SELECT name="eleve_c" size=1>';
             try{
               $db = new PDO('mysql:host=localhost;dbname=gestionintervenantsexperts','root','');
-              $qry = "SELECT prenom FROM demande FULL JOIN personne ON id_eleve = personne.id_personne ";
+              $qry = 'SELECT prenom,etat FROM demande FULL JOIN personne ON id_eleve = personne.id_personne WHERE etat="transmis" ';
               $req = $db->query($qry);
               while($log = $req->fetch()){
                 echo '<option value="'.$log[0].'">'.$log[0];
@@ -190,7 +190,7 @@ FIN CODE POUR LES COURS
           $eleve = $_SESSION['eleve'];
           $sql = 'UPDATE demande SET id_expert ='.$sous_requ.' WHERE id_eleve = "'.$eleve.'"';
           $db->prepare($sql)->execute();
-          $sql = 'UPDATE demande SET etat = "validee" WHERE id_eleve = "'.$eleve.'"';
+          $sql = 'UPDATE demande SET etat = "valide" WHERE id_eleve = "'.$eleve.'"';
           $db->prepare($sql)->execute();
         }
 
@@ -228,7 +228,7 @@ FIN CODE POUR LES COURS
               echo '<SELECT name="eleve_c2" size=1>';
               try{
                 $db = new PDO('mysql:host=localhost;dbname=gestionintervenantsexperts','root','');
-                $qry = "SELECT prenom FROM demande FULL JOIN personne ON id_eleve = personne.id_personne ";
+                $qry = 'SELECT prenom,etat FROM demande FULL JOIN personne ON id_eleve = personne.id_personne WHERE etat="renseigne" ';
                 $req = $db->query($qry);
                 while($log = $req->fetch()){
                   echo '<option value="'.$log[0].'">'.$log[0];
@@ -292,8 +292,8 @@ FIN CODE POUR LES COURS
     if(isset($_POST['archi'])){
 
       $elevec2 = $_SESSION['elevec2'];
-      $sql = 'UPDATE demande SET etat = "Archivée" WHERE id_demande = "'.$elevec2.'"';
-      echo $sql;
+      $sql = 'UPDATE demande SET etat = "archive" WHERE id_demande = "'.$elevec2.'"';
+      //echo $sql;
       $db->prepare($sql)->execute();
     }
 
