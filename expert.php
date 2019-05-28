@@ -45,17 +45,17 @@
     body, html {
   height: 100%;
 }
-   .background {
-  /* The image used */
-  background-image: url("fond.png");
+     .background {
+    /* The image used */
+    background-image: url("fond.png");
 
-  /* Full height */
-  height: 100%; 
+    /* Full height */
+    height: 100%; 
 
-  /* Center and scale the image nicely */
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 } /* Set black background color, white text and some padding */
     
     
