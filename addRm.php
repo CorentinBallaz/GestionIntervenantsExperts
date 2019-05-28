@@ -23,7 +23,7 @@ echo  $_SESSION['login'];
    	foreach($_POST['choix'] as $id_dem){
    		echo "refuser";
    		echo $id_dem;
-   	$rq3 =  'DELETE FROM demande WHERE( etat = "validee" AND id_demande = "'.$id_dem.'")';
+   	$rq3 =  'DELETE FROM demande WHERE( etat = "valide" AND id_demande = "'.$id_dem.'")';
    	$db->query($rq3);
 	}
 }	

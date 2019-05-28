@@ -8,6 +8,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
         <style>
+   
 
      .form-group{
 
@@ -41,8 +42,21 @@
       right: 0px;
 
     }
-    
-    /* Set black background color, white text and some padding */
+    body, html {
+  height: 100%;
+}
+   .background {
+  /* The image used */
+  background-image: url("fond.png");
+
+  /* Full height */
+  height: 100%; 
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+} /* Set black background color, white text and some padding */
     
     
     /* On small screens, set height to 'auto' for sidenav and grid */
@@ -56,14 +70,15 @@
   </style>
       </head>
 
-      <?php
+    
+<body>
+
+<div class="background">
+    <?php
 session_start();
 //echo "this is the session of ";
 echo  $_SESSION['login'];
  ?>
-<body>
-
-
 <form class="form-group" method="post" action="expert.php">
     Domaine d'expertise:
     <SELECT name="Expertise" size="1">
@@ -115,7 +130,7 @@ echo  $_SESSION['login'];
 		    <select multiple class="form-control" name="Eleve" id="exampleFormControlSelect1">
 		    <?php
     			$db = new PDO('mysql:host=localhost;dbname=gestionintervenantsexperts','root','');
-    			$qry = "SELECT nom, prenom  FROM personne where id_personne in (select id_eleve from demande where (etat = 'validee' and id_expert in (select id_personne from personne where login = '".$_SESSION["login"]."')))";
+    			$qry = "SELECT nom, prenom  FROM personne where id_personne in (select id_eleve from demande where (etat = 'valide' and id_expert in (select id_personne from personne where login = '".$_SESSION["login"]."')))";
    				 //echo $qry;
    					 //on recupere le type ( etudiant ,expert , prof )
     $req = $db->query($qry);
@@ -161,7 +176,7 @@ echo  $_SESSION['login'];
       
 
     $db = new PDO('mysql:host=localhost;dbname=gestionintervenantsexperts','root','');
-    $qry = "SELECT description,id_demande,nb_eleve_concerne FROM demande where (id_eleve in (select id_personne from personne where nom = '".$_POST["Eleve"]."') and etat = 'validee' )"  ;
+    $qry = "SELECT description,id_demande,nb_eleve_concerne FROM demande where (id_eleve in (select id_personne from personne where nom = '".$_POST["Eleve"]."') and etat = 'valide' )"  ;
     //echo $qry;
     //on recupere le type ( etudiant ,expert , prof )
     $i=0;
@@ -203,6 +218,7 @@ echo  $_SESSION['login'];
   	
   	
   </div>
+</div>
 </div>
 
 </body>
