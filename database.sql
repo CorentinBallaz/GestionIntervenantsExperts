@@ -103,7 +103,7 @@ INSERT INTO aCours(id_cours,id_personne) VALUES (6,4);
 INSERT INTO estExpert(id_domaine,id_expert) VALUES (1,1);
 INSERT INTO estExpert(id_domaine,id_expert) VALUES (14,2);
 
-INSERT INTO demande(id_cours_concerne,id_domaine_expertise,description,etat,nb_eleve_concerne,id_eleve) VALUES (1,1,"besoin d aide","transmise",15,3);
+INSERT INTO demande(id_cours_concerne,id_domaine_expertise,description,etat,nb_eleve_concerne,id_eleve) VALUES (1,1,"besoin d aide","transmis",15,3);
 INSERT INTO demande(id_cours_concerne,id_domaine_expertise,description,etat,nb_eleve_concerne,id_eleve,id_expert) VALUES (1,1,"besoin d aide","valide",12,4,1);
 
 
