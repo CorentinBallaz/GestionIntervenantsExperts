@@ -13,6 +13,8 @@
 
      	width: : 80px;
      }
+    
+
     /* Remove the navbar's default margin-bottom and rounded borders */ 
     .navbar {
       margin-bottom: 0;
@@ -31,6 +33,12 @@
     .list-group{
     	max-height: 220px;
     	overflow:scroll;
+
+    }
+    .col-sm-8{
+      position: absolute;
+      top : 200px;
+      right: 0px;
 
     }
     
@@ -74,7 +82,7 @@ echo  $_SESSION['login'];
     </SELECT>
 
   <input type="submit" name="Expertise1" class="btn btn-dark">
- </form>
+
  <?php
     if (isset($_POST['Expertise1'])){
       $sql = "INSERT INTO estexpert (id_domaine, id_expert) VALUES ((SELECT id_domaine FROM domaine_expertise WHERE nom_expertise = '".$_POST["Expertise"]."'),(SELECT id_personne FROM personne WHERE login = '".$_SESSION["login"]."'))";
@@ -83,10 +91,10 @@ echo  $_SESSION['login'];
     }
  ?>	
 
+</form>
 
 
-
-<div class="container-fluid text-center"> 
+<div class="container-fluid text-center" id="theContent"> 
 
   <div class="row content">
     
@@ -102,16 +110,18 @@ echo  $_SESSION['login'];
      	 <!--<div class="form-group">-->
      	 	<br>
      	 	<br>
+         <form  class="NameEleve" method = "post" action=" expert.php">
 		    <label for="Cours concernés">Demandes de : </label>
-		    <select class="form" name="Eleve" id="exampleFormControlSelect1">
+		    <select multiple class="form-control" name="Eleve" id="exampleFormControlSelect1">
 		    <?php
     			$db = new PDO('mysql:host=localhost;dbname=gestionintervenantsexperts','root','');
-    			$qry = "SELECT nom  FROM personne where id_personne in (select id_eleve from demande where (etat = 'validee' and id_expert in (select id_personne from personne where login = '".$_SESSION["login"]."')))";
+    			$qry = "SELECT nom, prenom  FROM personne where id_personne in (select id_eleve from demande where (etat = 'validee' and id_expert in (select id_personne from personne where login = '".$_SESSION["login"]."')))";
    				 //echo $qry;
    					 //on recupere le type ( etudiant ,expert , prof )
     $req = $db->query($qry);
     while($log = $req->fetch()){
       $Eleve = $log[0];
+      $PrenomEleve = $log[1];
       //echo $Cours;
       echo "<option>".$Eleve;
     }
@@ -120,65 +130,77 @@ echo  $_SESSION['login'];
 
 		 	</select>
 
+
+
   
   <input type="submit" name="Afficher" class="btn btn-dark">
-
+    </form>
 		  </div>
     
 
     <!--<div class="form-group">-->
   	<!--<div class ="col-xs-8">-->
-    <div class="col-sm-6"> 
-    		
+    <div class="col-sm-8"> 
+    		  <form  class="form-group" method = "post" action=" addRm.php">
     <table class="table table-striped">
     	<thead>
-     	 <tr>
-        	<th>cours_concerné</th>
-        	<th>description</th>
-        	<th>eleve_concerne</th>
-      	</tr>
+     	 
+        	<!--<th>cours_concerné</th>-->
+       
+            <th>Description de la demande</th>
+            <th>Nombre d'élèves concernés</th>
+            <th>Selection pour action</th>
+
+        	
+      	
     	</thead>
-    <tbody>
+  
+   
   	 <?php
   	 if (isset($_POST["Afficher"])){
+      
+
     $db = new PDO('mysql:host=localhost;dbname=gestionintervenantsexperts','root','');
-    $qry = "SELECT cours_concerne,description FROM demande where id_eleve in (select id_personne from personne where nom = '".$_POST["Eleve"]."')"  ;
+    $qry = "SELECT description,id_demande,nb_eleve_concerne FROM demande where (id_eleve in (select id_personne from personne where nom = '".$_POST["Eleve"]."') and etat = 'validee' )"  ;
     //echo $qry;
     //on recupere le type ( etudiant ,expert , prof )
+    $i=0;
     $req = $db->query($qry);
-    while($log = $req->fetch()){
-      $Expertise = $log[0];
+        while($log = $req->fetch()){
+        $description = $log[0] ;
+        $nbEleve = $log[2];
+     // $description = $log[1];
+        echo "<tr>";
       //echo $Cours;
-      echo $Expertise;
-    }
-     ?>
+      echo "<td name = \"demande".(string)$i."\">".$description."</td>\n";
+      echo "<td name = \"nbEleve".(string)$i."\">".$nbEleve."</td>\n";
+      echo "<td><input type=\"checkbox\" id=\"choix\" name=\"choix[]\" value=\"".$log[1]."\"></td>\n";
 
+      echo "</tr>\n";
+      $i+=1;
+
+    //  echo "<td>".$description."</td>";
+    }
+
+     
   
 
 
 }
-       <tr>	
-       			<td> ISOC</td>
-       			<td> un cours concernant la blockchain</td>
-       			<td> Dadou</td>
-       </tr>
+?>
 
 
-    </tbody>
+
+
   </table>
-  
+
+        <button type="submit" class="btn" name = "Accepter">Accepter</button>
+       <button type="submit" class="btn" name = "Refuser" >Refuser</button>
+
+</form>
   	</div>
   	
-  	<div class="col-sm-2"> 
-  		
-  		
- 
-      <br>
-      <br>
-      <button type="button" class="btn">Accepter</button>
-       <button type="button" class="btn">Refuser</button>
-
-  	</div>
+  	
   	
   </div>
 </div>
