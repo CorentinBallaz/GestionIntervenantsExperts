@@ -158,18 +158,19 @@ FIN CODE POUR LES COURS
   <table class="table table-striped">
     <thead>
       <tr>
-        <th>cours_concerné</th>
+        <th>Domaine d'expertise</th>
         <th>description</th>
-        <th>etat</th>
-        <th>id_eleve</th>
+        <th>Nombre d'élève <br> concernés</th>
+        <th>Selectionner une <br> demande  (1 à la fois)</th>
 
       </tr>
     </thead>
-
+    <form  class="form-group" method = "post" action=" ModifbyProf.php">
     <?php
         if(isset($_POST['info'])){
           echo '<tbody>';
-          $qry = 'SELECT nom_cours ,description,etat, id_eleve FROM demande FULL JOIN cours ON id_cours_concerne = id_cours WHERE id_eleve =(SELECT id_personne FROM personne WHERE prenom ="'.$_POST['eleve_c'].'" AND etat = "transmis")';
+         // $qry = 'SELECT nom_cours ,description,etat, id_eleve FROM demande FULL JOIN cours ON id_cours_concerne = id_cours WHERE id_eleve =(SELECT id_personne FROM personne WHERE prenom ="'.$_POST['eleve_c'].'" AND etat = "transmis")';
+          $qry = 'SELECT nom_expertise, description, nb_eleve_concerne, id_eleve,id_demande,id_domaine_expertise FROM demande d, domaine_expertise de WHERE (id_eleve in (select id_personne from personne where prenom = "'.$_POST['eleve_c'].'") and d.etat =\'transmis\' and de.id_domaine=d.id_domaine_expertise)';
           $req = $db->query($qry);
           $nom_cours = "";
           $eleve="";
@@ -179,14 +180,27 @@ FIN CODE POUR LES COURS
             $nom_cours = $log[0];
             echo '<td>'.$log[1].'</td>';
             echo '<td>'.$log[2].'</td>';
-            echo '<td>'.$log[3].'</td>';
-
+//            echo '<td>'.$log[3].'</td>';
+            echo "<td><input type=\"checkbox\" id=\"choix\" name=\"choix[]\" value=\"".$log[4]."\"></td>\n";
             $_SESSION['eleve']=$log[3];
+
+
+          //  $qry2 = "SELECT nom FROM personne WHERE id_personne IN (SELECT id_expert FROM estexpert WHERE id_domaine IN (SELECT id_domaine FROM domaine_expertise WHERE id_cours IN (SELECT id_cours FROM cours WHERE nom_cours ='".$nom_cours."')))";
+            $qry2 = 'SELECT nom,id_personne from personne where id_personne in (SELECT id_expert from estexpert where id_domaine ='.$log[5].' )';
+            $req2 = $db->query($qry2);
+            echo '<td><SELECT name="expert'.$log[4].'" size=1><\td>\n';
+            while($log1 = $req2->fetch()){
+              echo '<option value="'.$log1[1].'">'.$log1[0];
+           }
             echo '</tr>';
           }
 
-            echo '<td>';
-            echo '<form class="form-group" method="post" action="professeur.php">';
+
+
+        }
+
+           // echo '<td>';
+            /*
             echo '<SELECT name="expert" size=1>';
             $query = "SELECT nom FROM personne WHERE id_personne IN (SELECT id_expert FROM estexpert WHERE id_domaine IN (SELECT id_domaine FROM domaine_expertise WHERE id_cours IN (SELECT id_cours FROM cours WHERE nom_cours ='".$nom_cours."')))";
 
@@ -210,10 +224,15 @@ FIN CODE POUR LES COURS
           $sql = 'UPDATE demande SET etat = "valide" WHERE id_eleve = "'.$eleve.'"';
           $db->prepare($sql)->execute();
         }
+*/
+
 
       ?>
 
        </table>
+
+          <button type="submit" class="btn" name = "Valider">Valider</button>
+        </form>
       <br>
       <br>
       <br>
