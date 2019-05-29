@@ -51,6 +51,22 @@
       }
       .row.content {height:auto;}
     }
+        body, html {
+  height: 100%;
+}
+
+      .background {
+  /* The image used */
+  background-image: url("fond.png");
+
+  /* Full height */
+  height: 100%; 
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+   background-size: cover;
+  }
   </style>
       </head>
 
@@ -65,7 +81,7 @@ echo  $_SESSION['login'];
 CODE POUR LES COURS
 -->
 
-
+<div class="background">
   <center></br><form class="form-group" method="post" action="professeur.php">
     Domaine :
     <SELECT name="Cours" size="1">
@@ -152,7 +168,7 @@ FIN CODE POUR LES COURS
     <?php
         if(isset($_POST['info'])){
           echo '<tbody>';
-          $qry = 'SELECT nom_cours ,description,etat, id_eleve FROM demande FULL JOIN cours ON id_cours_concerne = id_cours WHERE id_eleve =(SELECT id_personne FROM personne WHERE prenom ="'.$_POST['eleve_c'].'")';
+          $qry = 'SELECT nom_cours ,description,etat, id_eleve FROM demande FULL JOIN cours ON id_cours_concerne = id_cours WHERE id_eleve =(SELECT id_personne FROM personne WHERE prenom ="'.$_POST['eleve_c'].'" AND etat = "transmis")';
           $req = $db->query($qry);
           $nom_cours = "";
           $eleve="";
@@ -309,5 +325,6 @@ FIN CODE POUR LES COURS
 </div>
 </div>
 
+</div>
 
 </body>
