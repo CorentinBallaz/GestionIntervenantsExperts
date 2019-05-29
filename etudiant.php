@@ -8,7 +8,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
         <style>
-        	hr { width:95%; height:3px; background: #3359DE }
+        	
      .form-group{
      	width: : 80px;
      }
@@ -31,6 +31,27 @@
     	max-height: 220px;
     	overflow:scroll;
     }
+    .col-sm-8{
+      position: absolute;
+      top : 200px;
+      right: 0px;
+
+    }
+    body, html {
+  	height: 100%;
+}
+    .background {
+    /* The image used */
+    background-image: url("fond2.png");
+
+    /* Full height */
+    height: 118%; 
+
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+} 
     
     /* Set black background color, white text and some padding */
     
@@ -54,7 +75,7 @@ echo  $_SESSION['login'];
 <body>
 	
 
-
+<div class="background">
 <form class="form-group" method="post" action="etudiant.php">
 <div id="splitter">
 	<div class="container-fluid text-center"> 
@@ -154,12 +175,12 @@ echo "erreur de connection à la BDD";
   	
   </div>
 </div>
+
+
+
+
 </div>
 
-
-
-</div>
-<!-- SPLITE -->
 <div> 
 	<hr class="style4">
 		<div class="container-fluid text-center">    
@@ -177,24 +198,25 @@ echo "erreur de connection à la BDD";
 
  	<label for="Domaine expertise">Interventions n° :</label>
  	<br>
-<class ="form-group" method="post" action="etudiant.php">
+<form class ="form-group" method="post" action="etudiant.php">
 <?php
-    echo '';
-    echo '<SELECT name="inter" size=1>';
-    
-    try{
-      $db = new PDO('mysql:host=localhost;dbname=gestionintervenantsexperts','root','');
-      $qry = "SELECT id_demande FROM demande ";
-      $req = $db->query($qry);
-      while($log = $req->fetch()){
-        echo '<option value="'.$log[0].'">'.$log[0];
-      }
-    }catch(PDOExeption $e){
-      echo "erreur de connection à la BDD";
-    }
-    echo '</SELECT></br></br>';
-    echo '<input type="submit" name="intervention" class="btn btn-info" >';
- ?>
+            echo '';
+            echo '<SELECT name="numdem" size=1>';
+            try{
+              $db = new PDO('mysql:host=localhost;dbname=gestionintervenantsexperts','root','');
+              $qry = 'SELECT id_demande,etat FROM demande FULL JOIN personne ON id_eleve = personne.id_personne WHERE etat="accepte" ';
+              $req = $db->query($qry);
+              while($log = $req->fetch()){
+                echo '<option value="'.$log[0].'">'.$log[0];
+              }
+            }catch(PDOExeption $e){
+              echo "erreur de connection à la BDD";
+            }
+            echo '</SELECT></br></br>';
+            
+         ?>
+         <input type="submit" name="info" class="btn btn-info" >
+         
 </div>
 
   
@@ -209,68 +231,60 @@ echo "erreur de connection à la BDD";
           
    <table class="table table-striped">
     <thead>
-      <tr>
+      
         <th>Cours</th>
         <th>Domaine</th>
         <th>Expert</th>
-      </tr>
+      
 </thead>
 
-    <?php
-        if(isset($_POST['intervention'])){
-          echo '<tbody>';
-          $qry = 'SELECT nom_cours ,description,etat, id_eleve FROM demande FULL JOIN cours ON id_cours_concerne = id_cours WHERE id_eleve =(SELECT id_personne FROM personne WHERE prenom ="'.$_POST['eleve_c'].'")';
-          $req = $db->query($qry);
-          $nom_cours = "";
-          $eleve="";
-          while($log = $req->fetch()){
-            echo '<tr>';
-            echo '<td>'.$log[0].'</td>';
-            $nom_cours = $log[0];
-            echo '<td>'.$log[1].'</td>';
-            echo '<td>'.$log[2].'</td>';
-            echo '<td>'.$log[3].'</td>';
+      	 <?php
+  	 if (isset($_POST['info'])){
+      
 
-            $_SESSION['eleve']=$log[3];
-            echo '</tr>';
-          }
+    $db = new PDO('mysql:host=localhost;dbname=gestionintervenantsexperts','root','');
+    $qry = 'SELECT nom_cours FROM cours WHERE id_cours IN (SELECT id_cours_concerne FROM demande WHERE `id_demande`='.$_POST['numdem'].')';
+    $stmt = $db->prepare($qry);
+	$stmt->execute();
+	$result = $stmt->fetch();
+    
+    $qry2 = 'SELECT nom_expertise FROM domaine_expertise WHERE id_domaine IN (SELECT id_domaine_expertise FROM demande WHERE `id_demande`='.$_POST['numdem'].')';
+    $stmt2 = $db->prepare($qry2);
+	$stmt2->execute();
+	$result2 = $stmt2->fetch();
 
-            echo '<td>';
-            echo '<form class="form-group" method="post" action="professeur.php">';
-            echo '<SELECT name="expert" size=1>';
-            $query = "SELECT nom FROM personne WHERE id_personne IN (SELECT id_expert FROM estexpert WHERE id_domaine IN (SELECT id_domaine FROM domaine_expertise WHERE id_cours IN (SELECT id_cours FROM cours WHERE nom_cours ='".$nom_cours."')))";
+	$qry3 = 'SELECT nom FROM personne WHERE id_personne IN (SELECT id_cours_concerne FROM demande WHERE id_demande='.$_POST['numdem'].')';
+    $stmt3 = $db->prepare($qry3);
+	$stmt3->execute();
+	$result3 = $stmt3->fetch();
 
-            $req = $db->query($query);
-            while($log = $req->fetch()){
-              echo '<option value="'.$log[0].'">'.$log[0];
-           }
 
-           echo '</td><td>';
-           echo '</SELECT><input type="submit" name="expert_btn" class="btn btn-info" ></td></form>';
-           echo '</tbody>';
 
-        }
-        if (isset($_POST['expert_btn'])){
-          $nom_expert = $_POST['expert'];
-          $sous_requ = '(SELECT id_personne FROM personne WHERE nom ="'.$nom_expert.'")';
 
-          $eleve = $_SESSION['eleve'];
-          $sql = 'UPDATE demande SET id_expert ='.$sous_requ.' WHERE id_eleve = "'.$eleve.'"';
-          $db->prepare($sql)->execute();
-          $sql = 'UPDATE demande SET etat = "validee" WHERE id_eleve = "'.$eleve.'"';
-          $db->prepare($sql)->execute();
-        }
+	
+    echo '<tr>';
+    echo '<td>'.$result[0].'</td>';
+    echo '<td>'.$result2[0].'</td>';
+    echo '<td>'.$result3[0].'</td>';
+    echo "</tr>\n";
 
-      ?>
+    //  echo "<td>".$description."</td>";
+    }
+
+    
+?>
 
        </table>
 
  <!-- <label for="Duree intervention">Durée de l'intervention</label>-->
-<label for="Duree intervention">Durée de l'intervention</label>
-<input type="text" class="form-control" placeholder="Username" aria-label="Username" >
-<label for="Duree intervention">Commentaire sur l'intervention</label>
-<textarea class="form-control" aria-label="With textarea"></textarea>
 
+<label for="Duree intervention">Durée de l'intervention(minutes)</label>
+<br>
+<input type="number" name="heure" id="replyNumber" min="0" data-bind="value:replyNumber" />
+<br>
+<label for="Duree intervention">Commentaire sur l'intervention</label>
+<textarea class="form-control"  methode= 'post' name='ret' rows="5" id="comment" ></textarea>
+ 
 </div>
 
 
@@ -288,18 +302,36 @@ echo "erreur de connection à la BDD";
  
       <br>
       <br>
-      <button type="button" class="btn">Archivage</button>
+      <input type="submit" name="archiv" class="btn btn-info" >
+
   </div>
   </div>
 </div>
 </div>
+<?php
+try{
 
 
+if (isset($_POST['archiv']))
+{
+
+  $sql = 'UPDATE demande SET etat ="renseigne" WHERE (id_demande = '.$_POST['numdem'].')';
+  $db->prepare($sql)->execute();
+  $sql = 'UPDATE demande SET duree ='.$_POST['heure'].' WHERE (id_demande = '.$_POST['numdem'].')';
+  $db->prepare($sql)->execute();
+  $sql1 = 'UPDATE demande SET retour ="'.$_POST['ret'].'" WHERE (id_demande = '.$_POST['numdem'].')';
+  $db->prepare($sql1)->execute();
+
+
+}
+}catch(PDOExeption $e){
+echo "erreur de connection à la BDD";
+}
+?>      
+</form>
 </div>
 	</div>
 </div>
-<!--<footer class="container-fluid text-center">
-  <p>Footer Text</p>
-</footer>-->
-
 </body>
+
+
